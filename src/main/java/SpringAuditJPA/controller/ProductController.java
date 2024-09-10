@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/jpa")
 @RequiredArgsConstructor // aquí nos evitamos escribir auto wride
 public class ProductController {
 
