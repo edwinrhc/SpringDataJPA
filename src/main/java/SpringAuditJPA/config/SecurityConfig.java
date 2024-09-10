@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,6 +30,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(http -> {
+                    http.requestMatchers("/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").hasAnyAuthority("CREATE","DEVELOPER");
                     http.requestMatchers(HttpMethod.POST,"/jpa/create").hasAnyAuthority("CREATE","DEVELOPER");
                     http.requestMatchers(HttpMethod.PUT,"/jpa/update/**").hasAnyAuthority("UPDATE");
                     http.requestMatchers(HttpMethod.DELETE,"/jpa/delete/**").hasAnyAuthority("CREATE");
@@ -37,6 +39,7 @@ public class SecurityConfig {
                 })
                 .build();
     }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
